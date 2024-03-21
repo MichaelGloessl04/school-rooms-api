@@ -1,7 +1,8 @@
 from sqlalchemy.orm import Session
 
-from backend.crud import create_engine
-from backend.crud.models import Base, Room, User, Timetable
+from sqlalchemy import create_engine
+
+from crud.models import Base, Room, User, Timetable
 
 
 class Crud:
