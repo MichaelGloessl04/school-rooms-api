@@ -45,6 +45,14 @@ def test_update_room(crud_in_memory: Crud):
     assert room.occupied == ROOMS[0]["occupied"]
 
 
+def test_search_rooms(crud_in_memory: Crud):
+    crud = crud_in_memory
+    for i in range(1, 4):
+        rooms = crud.search(Room, ["name"], f"Room {i}")
+        assert len(rooms) == 1
+        assert rooms[0].name == f"Room {i}"
+
+
 def test_get_users(crud_in_memory: Crud):
     crud = crud_in_memory
     users = crud.get(User)
@@ -90,6 +98,14 @@ def test_update_user(crud_in_memory: Crud):
     assert user.name == updated_user["name"]
     assert user.surname == USERS[0]["surname"]
     assert user.email == USERS[0]["email"]
+
+
+def test_search_users(crud_in_memory: Crud):
+    crud = crud_in_memory
+    for i in range(1, 3):
+        users = crud.search(User, ["name"], USERS[i]["name"])
+        assert len(users) == 1
+        assert users[0].name == USERS[i]["name"]
 
 
 def test_get_timetables(crud_in_memory: Crud):
@@ -142,3 +158,13 @@ def test_update_timetable(crud_in_memory: Crud):
     assert timetable.end == TIMETABLES[0]["end"]
     assert timetable.room_id == TIMETABLES[0]["room_id"]
     assert timetable.user_id == TIMETABLES[0]["user_id"]
+
+
+def test_search_timetables(crud_in_memory: Crud):
+    crud = crud_in_memory
+    for i in range(1, 3):
+        timetables = crud.search(Timetable,
+                                 ["user_id"],
+                                 TIMETABLES[i]["user_id"])
+        assert len(timetables) == 1
+        assert timetables[0].user_id == TIMETABLES[i]["user_id"]

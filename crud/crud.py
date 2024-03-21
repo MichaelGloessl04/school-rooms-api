@@ -19,6 +19,18 @@ class Crud:
         with Session(self._engine) as session:
             return session.query(model).get(id)
 
+    def search(self,
+               model: Base,
+               columns: List[str],
+               search_term: str) -> List[Base]:
+        self._check_model(model)
+        with Session(self._engine) as session:
+            query = session.query(model)
+            for column in columns:
+                query = query.filter(
+                    getattr(model, column).like(f"%{search_term}%"))
+        return query.all()
+
     def create(self, model: Base, data: dict) -> Base:
         self._check_model(model)
         with Session(self._engine) as session:
