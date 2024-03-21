@@ -1,9 +1,9 @@
 import datetime
 
-from crud.crud import Crud
-from crud.models import Room, User, Timetable
+from backend.crud.crud import Crud
+from backend.crud.models import Room, User, Reservation
 
-from .populate import ROOMS, USERS, TIMETABLES
+from .populate import ROOMS, USERS, RESERVATIONS
 
 
 def test_get_rooms(crud_in_memory: Crud):
@@ -108,63 +108,63 @@ def test_search_users(crud_in_memory: Crud):
         assert users[0].name == USERS[i]["name"]
 
 
-def test_get_timetables(crud_in_memory: Crud):
+def test_get_reservations(crud_in_memory: Crud):
     crud = crud_in_memory
-    timetables = crud.get(Timetable)
-    for timetable, test_timetable in zip(timetables, TIMETABLES):
-        assert isinstance(timetable, Timetable)
-        assert timetable.id == test_timetable["id"]
-        assert timetable.start == test_timetable["start"]
-        assert timetable.end == test_timetable["end"]
-        assert timetable.room_id == test_timetable["room_id"]
-        assert timetable.user_id == test_timetable["user_id"]
+    reservations = crud.get(Reservation)
+    for reservation, test_reservation in zip(reservations, RESERVATIONS):
+        assert isinstance(reservation, Reservation)
+        assert reservation.id == test_reservation["id"]
+        assert reservation.start == test_reservation["start"]
+        assert reservation.end == test_reservation["end"]
+        assert reservation.room_id == test_reservation["room_id"]
+        assert reservation.user_id == test_reservation["user_id"]
 
 
-def test_get_timetable(crud_in_memory: Crud):
+def test_get_reservation(crud_in_memory: Crud):
     crud = crud_in_memory
-    timetable = crud.get_single(Timetable, id=TIMETABLES[0]["id"])
-    assert isinstance(timetable, Timetable)
-    assert timetable.id == TIMETABLES[0]["id"]
-    assert timetable.start == TIMETABLES[0]["start"]
-    assert timetable.end == TIMETABLES[0]["end"]
-    assert timetable.room_id == TIMETABLES[0]["room_id"]
-    assert timetable.user_id == TIMETABLES[0]["user_id"]
+    reservation = crud.get_single(Reservation, id=RESERVATIONS[0]["id"])
+    assert isinstance(reservation, Reservation)
+    assert reservation.id == RESERVATIONS[0]["id"]
+    assert reservation.start == RESERVATIONS[0]["start"]
+    assert reservation.end == RESERVATIONS[0]["end"]
+    assert reservation.room_id == RESERVATIONS[0]["room_id"]
+    assert reservation.user_id == RESERVATIONS[0]["user_id"]
 
 
-def test_create_timetable(crud_in_memory: Crud):
+def test_create_reservation(crud_in_memory: Crud):
     crud = crud_in_memory
-    new_timetable = {
+    new_reservation = {
         "start": datetime.datetime(2021, 1, 1, 12, 0, 0),
         "end": datetime.datetime(2021, 1, 1, 13, 0, 0),
         "room_id": 1,
         "user_id": 1
     }
-    timetable = crud.create(Timetable, new_timetable)
-    assert isinstance(timetable, Timetable)
-    assert timetable.id == len(TIMETABLES) + 1
-    assert timetable.start == new_timetable["start"]
-    assert timetable.end == new_timetable["end"]
-    assert timetable.room_id == new_timetable["room_id"]
-    assert timetable.user_id == new_timetable["user_id"]
+    reservation = crud.create(Reservation, new_reservation)
+    assert isinstance(reservation, Reservation)
+    assert reservation.id == len(RESERVATIONS) + 1
+    assert reservation.start == new_reservation["start"]
+    assert reservation.end == new_reservation["end"]
+    assert reservation.room_id == new_reservation["room_id"]
+    assert reservation.user_id == new_reservation["user_id"]
 
 
-def test_update_timetable(crud_in_memory: Crud):
+def test_update_reservation(crud_in_memory: Crud):
     crud = crud_in_memory
-    updated_timetable = {"start": datetime.datetime(2021, 1, 1, 8, 30, 0)}
-    timetable = crud.update(Timetable, id=1, data=updated_timetable)
-    assert isinstance(timetable, Timetable)
-    assert timetable.id == TIMETABLES[0]["id"]
-    assert timetable.start == updated_timetable["start"]
-    assert timetable.end == TIMETABLES[0]["end"]
-    assert timetable.room_id == TIMETABLES[0]["room_id"]
-    assert timetable.user_id == TIMETABLES[0]["user_id"]
+    updated_reservation = {"start": datetime.datetime(2021, 1, 1, 8, 30, 0)}
+    reservation = crud.update(Reservation, id=1, data=updated_reservation)
+    assert isinstance(reservation, Reservation)
+    assert reservation.id == RESERVATIONS[0]["id"]
+    assert reservation.start == updated_reservation["start"]
+    assert reservation.end == RESERVATIONS[0]["end"]
+    assert reservation.room_id == RESERVATIONS[0]["room_id"]
+    assert reservation.user_id == RESERVATIONS[0]["user_id"]
 
 
-def test_search_timetables(crud_in_memory: Crud):
+def test_search_reservations(crud_in_memory: Crud):
     crud = crud_in_memory
     for i in range(1, 3):
-        timetables = crud.search(Timetable,
-                                 ["user_id"],
-                                 TIMETABLES[i]["user_id"])
-        assert len(timetables) == 1
-        assert timetables[0].user_id == TIMETABLES[i]["user_id"]
+        reservations = crud.search(Reservation,
+                                   ["user_id"],
+                                   RESERVATIONS[i]["user_id"])
+        assert len(reservations) == 1
+        assert reservations[0].user_id == RESERVATIONS[i]["user_id"]

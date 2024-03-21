@@ -3,8 +3,8 @@ import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from crud.crud import Crud
-from crud.models import Room, Timetable, User
+from backend.crud.crud import Crud
+from backend.crud.models import Room, Reservation, User
 
 from .populate import populate
 
@@ -16,5 +16,5 @@ def crud_in_memory():
     session = sessionmaker(bind=engine)
     populate(session, Room)
     populate(session, User)
-    populate(session, Timetable)
+    populate(session, Reservation)
     yield crud

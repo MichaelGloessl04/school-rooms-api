@@ -1,7 +1,7 @@
 from typing import List
 from sqlalchemy.orm import Session
 
-from crud.models import Base, Room, User, Timetable
+from backend.crud.models import Base, Room, User, Reservation
 
 
 class Crud:
@@ -51,6 +51,6 @@ class Crud:
             return instance
 
     def _check_model(self, model):
-        if model not in [Room, User, Timetable]:
+        if model not in [Room, User, Reservation]:
             raise TypeError(
                 f"Model {model} is not in the list of available models.")

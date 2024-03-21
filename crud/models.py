@@ -47,17 +47,17 @@ class User(Base):
                                                                 self.email)
 
 
-class Timetable(Base):
-    """The model for the timetables table.
+class Reservation(Base):
+    """The model for the reservation table.
 
     Attributes:
         id (int): The primary key.
-        start (str): The start time of the timetable.
-        end (str): The end time of the timetable.
+        start (str): The start time of the reservation.
+        end (str): The end time of the reservation.
         room_id (int): The foreign key to the rooms table.
         user_id (int): The foreign key to the users table.
     """
-    __tablename__ = 'timetables'
+    __tablename__ = 'reservations'
 
     id = Column(Integer, primary_key=True)
     start = Column(DateTime)
@@ -67,5 +67,5 @@ class Timetable(Base):
 
     def __repr__(self):
         return \
-            "<Timetable(start='%s', end='%s', room_id='%s', user_id='%s')>" % (
+            "<Reservation(start='%s', end='%s', room_id='%s', user_id='%s')>" % (
                 self.start, self.end, self.room_id, self.user_id)

@@ -1,6 +1,6 @@
 import datetime
 
-from crud.models import Room, Timetable, User
+from backend.crud.models import Room, Reservation, User
 
 
 ROOMS = [
@@ -30,7 +30,7 @@ USERS = [
     },
 ]
 
-TIMETABLES = [
+RESERVATIONS = [
     {
         "id": 1,
         "start": datetime.datetime(2021, 1, 1, 8, 0, 0),
@@ -61,8 +61,8 @@ def populate(session, obj):
         mock_data = ROOMS
     elif obj == User:
         mock_data = USERS
-    elif obj == Timetable:
-        mock_data = TIMETABLES
+    elif obj == Reservation:
+        mock_data = RESERVATIONS
 
     with session() as session:
         for data in mock_data:
