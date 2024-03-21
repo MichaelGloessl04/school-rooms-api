@@ -3,7 +3,7 @@ from fastapi.testclient import TestClient
 from backend.crud import Crud
 
 import backend.api.api_types as ApiTypes
-from backend.api.main import app
+from backend.api.main import app, resources
 
 from backend.tests.populate import ROOMS
 
@@ -20,6 +20,7 @@ def test_read_main():
 
 def test_read_rooms(crud_in_memory: Crud):
     with TestClient(app) as client:
+        resources['crud'] = crud_in_memory
         response = client.get(base_url + "/rooms/")
         assert response.status_code == 200
         rooms = response.json()

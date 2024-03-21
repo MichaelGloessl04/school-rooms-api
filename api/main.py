@@ -7,19 +7,18 @@ from backend.crud import create_engine, Crud
 
 import backend.api.api_types as ApiTypes
 
-crud = None
+resources = {}
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """start the character device reader"""
     print('lifespan started')
-    global crud
     engine = create_engine('sqlite:///backend/database.db')
-    crud = Crud(engine)
+    resources['crud'] = Crud(engine)
     yield
     engine.dispose()
-    crud = None
+    resources.clear()
     print('lifespan finished')
 
 
@@ -34,5 +33,4 @@ async def read_main():
 
 @app.get(prefix + '/rooms/')
 async def read_rooms() -> List[ApiTypes.Room]:
-    global crud
-    return crud.get(Models.Room)
+    return resources['crud'].get(Models.Room)
