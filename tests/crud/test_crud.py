@@ -3,7 +3,7 @@ import datetime
 from backend.crud.crud import Crud
 from backend.crud.models import Room, User, Reservation
 
-from .populate import ROOMS, USERS, RESERVATIONS
+from backend.tests.populate import ROOMS, USERS, RESERVATIONS
 
 
 def test_get_rooms(crud_in_memory: Crud):
