@@ -1,4 +1,4 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Date
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DateTime
 from sqlalchemy.orm import DeclarativeBase
 
 
@@ -60,8 +60,8 @@ class Timetable(Base):
     __tablename__ = 'timetables'
 
     id = Column(Integer, primary_key=True)
-    start = Column(Date)
-    end = Column(Date)
+    start = Column(DateTime)
+    end = Column(DateTime)
     room_id = Column(Integer, ForeignKey('rooms.id'))
     user_id = Column(Integer, ForeignKey('users.id'))
 

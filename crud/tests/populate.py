@@ -4,24 +4,54 @@ from crud.models import Room, Timetable, User
 
 
 ROOMS = [
-    Room(name='Room 1', occupied=False),
-    Room(name='Room 2', occupied=False),
-    Room(name='Room 3', occupied=False),
+    {"id": 1, "name": "Room 1", "occupied": False},
+    {"id": 2, "name": "Room 2", "occupied": False},
+    {"id": 3, "name": "Room 3", "occupied": False},
 ]
 
 USERS = [
-    User(name='John', surname='Doe', email=''),
-    User(name='Jane', surname='Doe', email=''),
-    User(name='John', surname='Smith', email=''),
+    {
+        "id": 1,
+        "name": "John",
+        "surname": "Doe",
+        "email": "johndoe@example.com"
+    },
+    {
+        "id": 2,
+        "name": "Jane",
+        "surname": "Doe",
+        "email": "janedoe@example.com"
+    },
+    {
+        "id": 3,
+        "name": "Alice",
+        "surname": "Doe",
+        "email": "alicedoe@example.com"
+    },
 ]
 
 TIMETABLES = [
-    Timetable(start=datetime.time(8, 0), end=datetime.time(9, 0),
-              room_id=1, user_id=1),
-    Timetable(start=datetime.time(9, 0), end=datetime.time(10, 0),
-              room_id=2, user_id=2),
-    Timetable(start=datetime.time(10, 0), end=datetime.time(11, 0),
-              room_id=3, user_id=3),
+    {
+        "id": 1,
+        "start": datetime.datetime(2021, 1, 1, 8, 0, 0),
+        "end": datetime.datetime(2021, 1, 1, 9, 0, 0),
+        "room_id": 1,
+        "user_id": 1
+    },
+    {
+        "id": 2,
+        "start": datetime.datetime(2021, 1, 1, 9, 0, 0),
+        "end": datetime.datetime(2021, 1, 1, 10, 0, 0),
+        "room_id": 2,
+        "user_id": 2
+    },
+    {
+        "id": 3,
+        "start": datetime.datetime(2021, 1, 1, 10, 0, 0),
+        "end": datetime.datetime(2021, 1, 1, 11, 0, 0),
+        "room_id": 3,
+        "user_id": 3
+    }
 ]
 
 
@@ -35,5 +65,6 @@ def populate(session, obj):
         mock_data = TIMETABLES
 
     with session() as session:
-        session.add_all(mock_data)
+        for data in mock_data:
+            session.add(obj(**data))
         session.commit()

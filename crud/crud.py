@@ -1,12 +1,44 @@
+from typing import List
 from sqlalchemy.orm import Session
-
-from sqlalchemy import create_engine
 
 from crud.models import Base, Room, User, Timetable
 
 
 class Crud:
-    def __init__(self, url: str):
-        self._engine = create_engine(url)
-        self._session = Session(bind=self._engine)
+    def __init__(self, engine):
+        self._engine = engine
         Base.metadata.create_all(self._engine)
+
+    def get(self, model: Base) -> List[Base]:
+        self._check_model(model)
+        with Session(self._engine) as session:
+            return session.query(model).all()
+
+    def get_single(self, model: Base, id: int) -> Base:
+        self._check_model(model)
+        with Session(self._engine) as session:
+            return session.query(model).get(id)
+
+    def create(self, model: Base, data: dict) -> Base:
+        self._check_model(model)
+        with Session(self._engine) as session:
+            instance = model(**data)
+            session.add(instance)
+            session.commit()
+            session.refresh(instance)
+            return instance
+
+    def update(self, model: Base, id: int, data: dict) -> Base:
+        self._check_model(model)
+        with Session(self._engine) as session:
+            instance = session.query(model).get(id)
+            for key, value in data.items():
+                setattr(instance, key, value)
+            session.commit()
+            session.refresh(instance)
+            return instance
+
+    def _check_model(self, model):
+        if model not in [Room, User, Timetable]:
+            raise TypeError(
+                f"Model {model} is not in the list of available models.")
