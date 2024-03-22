@@ -14,8 +14,12 @@ resources = {}
 async def lifespan(app: FastAPI):
     """start the character device reader"""
     print('lifespan started')
-    engine = create_engine('sqlite:///backend/database.db')
-    resources['crud'] = Crud(engine)
+    from backend.tests.api.test_main import create_test_database, testing
+    if testing:
+        create_test_database()
+    else:
+        engine = create_engine('sqlite:///backend/database.db')
+        resources['crud'] = Crud(engine)
     yield
     engine.dispose()
     resources.clear()
