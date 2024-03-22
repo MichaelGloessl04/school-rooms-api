@@ -1,3 +1,4 @@
+from typing import List
 from pydantic import BaseModel
 
 
@@ -29,3 +30,8 @@ class ReservationNoID(BaseModel):
 
 class Reservation(ReservationNoID):
     id: int
+
+
+class SearchConfig(BaseModel):
+    search_columns: List[str]
+    search_term: str
