@@ -1,6 +1,6 @@
 from fastapi.testclient import TestClient
 
-from backend.api.main import app
+from api.main import app
 
 base_url = "/ssr-json/v1"
 

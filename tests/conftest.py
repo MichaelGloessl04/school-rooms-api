@@ -1,1 +1,1 @@
-from backend.tests.fixtures import crud_in_memory
+from tests.fixtures import crud_in_memory

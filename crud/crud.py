@@ -1,7 +1,7 @@
 from typing import List
 from sqlalchemy.orm import Session
 
-from backend.crud.models import Base, Room, User, Reservation
+from crud.models import Base, Room, User, Reservation
 
 
 class Crud:

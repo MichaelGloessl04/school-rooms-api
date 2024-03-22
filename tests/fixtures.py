@@ -3,8 +3,8 @@ import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from backend.crud.crud import Crud
-from backend.crud.models import Room, Reservation, User
+from crud.crud import Crud
+from crud.models import Room, Reservation, User
 
 from .populate import populate
 

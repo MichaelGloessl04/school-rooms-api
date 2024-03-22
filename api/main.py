@@ -2,10 +2,10 @@ from typing import List
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
 
-import backend.crud.models as Models
-from backend.crud import create_engine, Crud
+import crud.models as Models
+from crud import create_engine, Crud
 
-import backend.api.api_types as ApiTypes
+import api.api_types as ApiTypes
 
 resources = {}
 
@@ -14,7 +14,7 @@ resources = {}
 async def lifespan(app: FastAPI):
     """start the character device reader"""
     print('lifespan started')
-    engine = create_engine('sqlite:///backend/database.db')
+    engine = create_engine('sqlite:///database.db')
     resources['crud'] = Crud(engine)
     yield
     engine.dispose()

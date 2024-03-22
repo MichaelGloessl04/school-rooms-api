@@ -1,6 +1,6 @@
 import datetime
 
-from backend.crud.models import Room, Reservation, User
+from crud.models import Room, Reservation, User
 
 
 ROOMS = [
