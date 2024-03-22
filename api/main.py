@@ -14,19 +14,19 @@ resources = {}
 async def lifespan(app: FastAPI):
     """start the character device reader"""
     print('lifespan started')
-    from backend.tests.api.test_main import create_test_database, testing
-    if testing:
-        create_test_database()
-    else:
-        engine = create_engine('sqlite:///backend/database.db')
-        resources['crud'] = Crud(engine)
+    engine = create_engine('sqlite:///backend/database.db')
+    resources['crud'] = Crud(engine)
     yield
     engine.dispose()
     resources.clear()
     print('lifespan finished')
 
 
-app = FastAPI(lifespan=lifespan)
+app = FastAPI(lifespan=lifespan,
+              swagger_ui_parameters={
+                    'persistAuthorization': True,
+                    'docExpansion': 'none'
+                })
 prefix = '/ssr-json/v1'
 
 
