@@ -1,3 +1,5 @@
+import logging
+
 from typing import List
 from sqlalchemy.orm import Session
 
@@ -33,12 +35,16 @@ class Crud:
 
     def create(self, model: Base, data: dict) -> Base:
         self._check_model(model)
-        with Session(self._engine) as session:
-            instance = model(**data)
-            session.add(instance)
-            session.commit()
-            session.refresh(instance)
-            return instance
+        try:
+            with Session(self._engine) as session:
+                instance = model(**data)
+                session.add(instance)
+                session.commit()
+                session.refresh(instance)
+                return instance
+        except Exception as e:
+            logging.error(e)
+            return None
 
     def update(self, model: Base, id: int, data: dict) -> Base:
         self._check_model(model)

@@ -1,3 +1,5 @@
+import datetime
+
 from typing import List
 from pydantic import BaseModel
 
@@ -13,8 +15,8 @@ class Room(RoomNoID):
 
 class UserNoID(BaseModel):
     name: str
+    surname: str
     email: str
-    password: str
 
 
 class User(UserNoID):
@@ -24,8 +26,8 @@ class User(UserNoID):
 class ReservationNoID(BaseModel):
     user_id: int
     room_id: int
-    start_date: str
-    end_date: str
+    start: datetime.datetime
+    end: datetime.datetime
 
 
 class Reservation(ReservationNoID):

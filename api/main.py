@@ -26,14 +26,26 @@ async def lifespan(app: FastAPI):
 app = FastAPI(lifespan=lifespan,
               swagger_ui_parameters={
                     'persistAuthorization': True,
-                    'docExpansion': 'none'
+                    'docExpansion': 'none',
+                    'defaultModelsExpandDepth': -1,
+                    'displayRequestDuration': True,
+                    'filter': True,
+                    'showExtensions': True,
+                    'tagsSorter': 'alpha',
+                    'operationsSorter': 'alpha',
+                    'deepLinking': True,
+                    'displayOperationId': False,
+                    'defaultModelRendering': 'schema',
+                    'showCommonExtensions': True,
                 })
 
 origins = [
     "http://localhost",
     "http://localhost:8080",
+    "http://localhost:8081",
     "http://localhost:8000",
-    "http://localhost:5173"
+    "http://localhost:5173",
+    "http://localhost:5173/",
 ]
 
 app.add_middleware(
@@ -63,7 +75,7 @@ async def read_rooms(search_columns: str = None,
 
 @app.get('/rooms/{room_id}', tags=['rooms'])
 async def read_room(room_id: int) -> ApiTypes.Room:
-    return resources['crud'].get(Models.Room, room_id)
+    return resources['crud'].get_single(Models.Room, room_id)
 
 
 @app.post('/rooms/', tags=['rooms'])
@@ -103,7 +115,7 @@ async def read_reservations(
 
 @app.get('/reservations/{reservation_id}', tags=['reservations'])
 async def read_reservation(reservation_id: int) -> ApiTypes.Reservation:
-    return resources['crud'].get(Models.Reservation, reservation_id)
+    return resources['crud'].get_single(Models.Reservation, reservation_id)
 
 
 @app.post('/reservations/', tags=['reservations'])
@@ -111,9 +123,9 @@ async def create_reservation(
         reservation: ApiTypes.ReservationNoID) -> ApiTypes.Reservation:
     new_reservation = {
         'room_id': reservation.room_id,
-        'date': reservation.date,
-        'start_time': reservation.start_time,
-        'end_time': reservation.end_time,
+        'user_id': reservation.user_id,
+        'start': reservation.start,
+        'end': reservation.end,
     }
     return resources['crud'].create(Models.Reservation, new_reservation)
 
@@ -124,9 +136,9 @@ async def update_reservation(
         reservation: ApiTypes.ReservationNoID) -> ApiTypes.Reservation:
     updated_reservation = {
         'room_id': reservation.room_id,
-        'date': reservation.date,
-        'start_time': reservation.start_time,
-        'end_time': reservation.end_time,
+        'user_id': reservation.user_id,
+        'start': reservation.start,
+        'end': reservation.end,
     }
     return resources['crud'].update(
         Models.Reservation, reservation_id, updated_reservation)
@@ -150,15 +162,15 @@ async def read_users(search_columns: str = None,
 
 @app.get('/users/{user_id}', tags=['users'])
 async def read_user(user_id: int) -> ApiTypes.User:
-    return resources['crud'].get(Models.User, user_id)
+    return resources['crud'].get_single(Models.User, user_id)
 
 
 @app.post('/users/', tags=['users'])
 async def create_user(user: ApiTypes.UserNoID) -> ApiTypes.User:
     new_user = {
         'name': user.name,
+        'surname': user.surname,
         'email': user.email,
-        'password': user.password,
     }
     return resources['crud'].create(Models.User, new_user)
 
@@ -167,8 +179,8 @@ async def create_user(user: ApiTypes.UserNoID) -> ApiTypes.User:
 async def update_user(user_id: int, user: ApiTypes.UserNoID) -> ApiTypes.User:
     updated_user = {
         'name': user.name,
+        'surname': user.surname,
         'email': user.email,
-        'password': user.password,
     }
     return resources['crud'].update(Models.User, user_id, updated_user)
 

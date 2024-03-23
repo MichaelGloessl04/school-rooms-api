@@ -2,12 +2,10 @@ from fastapi.testclient import TestClient
 
 from api.main import app
 
-base_url = "/ssr-json/v1"
-
 
 def test_read_main():
     with TestClient(app) as client:
-        response = client.get(base_url + "/")
+        response = client.get("/")
         assert response.status_code == 200
         assert response.json() == \
             "This is the base endpoint of the school rooms reservation API v1."
@@ -18,7 +16,7 @@ def test_read_rooms():
     global testing
     testing = True
     with TestClient(app) as client:
-        response = client.get(base_url + "/rooms/")
+        response = client.get("/rooms/")
         assert response.status_code == 200
         rooms = response.json()
         assert len(rooms) == len(ROOMS)

@@ -67,5 +67,5 @@ class Reservation(Base):
 
     def __repr__(self):
         return \
-            "<Reservation(start='%s', end='%s', room_id='%s', user_id='%s')>" % (
-                self.start, self.end, self.room_id, self.user_id)
+            ("<Reservation(start='%s',end='%s', room_id='%s', user_id='%s')>"
+                % (self.start, self.end, self.room_id, self.user_id))
