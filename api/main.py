@@ -1,3 +1,5 @@
+import datetime
+
 from typing import List
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -76,6 +78,20 @@ async def read_rooms(search_columns: str = None,
 @app.get('/rooms/{room_id}', tags=['rooms'])
 async def read_room(room_id: int) -> ApiTypes.Room:
     return resources['crud'].get_single(Models.Room, room_id)
+
+
+@app.get('/rooms/{room_id}/occupant', tags=['rooms'])
+async def read_room_occupant(room_id: int) -> ApiTypes.User:
+    reservations = resources['crud'].search(Models.Reservation,
+                                            ['user_id'],
+                                            str(room_id))
+    if reservations:
+        for reservation in reservations:
+            if (datetime.datetime.now() > reservation.start and
+                datetime.datetime.now() < reservation.end):
+                return resources['crud'].get_single(Models.User,
+                                                    reservation.user_id)
+    return None
 
 
 @app.post('/rooms/', tags=['rooms'])
